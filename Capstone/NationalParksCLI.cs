@@ -110,11 +110,15 @@ namespace Capstone
             Console.WriteLine("Cuyahoga Campgrounds ");
             CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
             List<Campground> cuyahogaCampgrounds = dal.GetAllCampgrounds(3);
-            foreach(Campground c in cuyahogaCampgrounds)
+            System.Globalization.DateTimeFormatInfo dtf = new System.Globalization.DateTimeFormatInfo();
+            string monthEnd = "";
+            string monthStart = "";
+            foreach (Campground c in cuyahogaCampgrounds)
             {
                 Console.WriteLine();
-
-                Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  " + (c.Daily_Fee.ToString("c")));
+                monthStart = dtf.GetMonthName(c.Open_From_MM).ToString();
+                monthEnd = dtf.GetMonthName(c.Open_To_MM).ToString();
+                Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + monthStart + " - " + monthEnd + " -  " + (c.Daily_Fee.ToString("c")));
 
             }
             Console.WriteLine("Make a reservation = 1");
@@ -130,11 +134,18 @@ namespace Capstone
             CampsiteSQLDAL siteDal = new CampsiteSQLDAL(connectionString);
 
             List<Campsite> availableSites = siteDal.GetAvailableCampsites(campgroundchoice, fromDate, toDate);
-           foreach(Campsite c in availableSites)
+            if (availableSites.Count <= 0)
             {
-                Console.WriteLine();
+                Console.WriteLine("Youre outta luck buck-o");
+            }
+            else
+            {
+                foreach (Campsite c in availableSites)
+                {
+                    Console.WriteLine();
 
-                Console.WriteLine(c.Site_ID + " - " + c.Campground_ID + " - " + c.Site_Number + " - " + c.Max_Occupancy + " - Handicap Assec " + c.Accessible + " - " + c.Max_RV_Length + " - " + c.Utilities);
+                    Console.WriteLine(c.Site_ID + " - " + c.Campground_ID + " - " + c.Site_Number + " - " + c.Max_Occupancy + " - Handicap Assec " + c.Accessible + " - " + c.Max_RV_Length + " - " + c.Utilities);
+                }
             }
 
             int siteIdChoice = CLIHelper.GetInteger("Which campsite would you like to reserve?");
@@ -183,6 +194,7 @@ namespace Capstone
             ParkSQLDAL dal = new ParkSQLDAL(connectionString);
             List<Park> allParks = dal.ShowAllNationalParks();
             Console.WriteLine("Showing all National Parks in our System");
+           
 
             foreach (Park p in allParks)
             {
