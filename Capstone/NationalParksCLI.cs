@@ -16,7 +16,7 @@ namespace Capstone
         private string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=NationalParks;User ID=te_student;Password=sqlserver1";
         const string Command_ShowAllParks = "1";
         const string Command_ShowCampGroundByPark = "2";
-        //const string /*Command_ = "3";*/
+        //const string Command_SHowAllCampsites = "3";
         //const string /*Command_ = "4";*/
         //const string /*Command_= "5";*/
         //const string /*Command_ = "6";*/
@@ -65,7 +65,82 @@ namespace Capstone
 
         private void ShowCampgroundByPark()
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                Console.WriteLine("Acdia = 1");
+                Console.WriteLine("Arches = 2");
+                Console.WriteLine("Cuy valley = 3");
+                Console.WriteLine("Quit = 4");
+                int parkchoiceMade = CLIHelper.GetInteger("Make choice");
+
+                switch(parkchoiceMade)
+                {
+                    case 1:
+                        ShowAcadiaCampgrounds();
+                       break;
+                    case 2:
+                        ShowArchesCampgrounds();
+                        break;
+                    case 3:
+                        ShowCuyahogaCampgrounds();
+                        break;
+                    case 4:
+                        RunCLI();
+                        break;
+
+                }
+                break;
+
+            }
+        }
+
+        private void ShowCuyahogaCampgrounds()
+        {
+            Console.WriteLine("Cuyahoga Campgrounds ");
+            CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
+            List<Campground> cuyahogaCampgrounds = dal.GetAllCampgrounds(3);
+            foreach(Campground c in cuyahogaCampgrounds)
+            {
+                Console.WriteLine();
+                Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  $" + Math.Round(c.Daily_Fee));
+
+            }
+            Console.WriteLine("Make a reservation = 1");
+            Console.WriteLine("return to main menu = 2");
+            int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
+            // reservation system
+        }
+
+        private void ShowArchesCampgrounds()
+        {
+            Console.WriteLine("Arches Campgrounds");
+            CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
+            List<Campground> archesCampgrounds = dal.GetAllCampgrounds(2);
+            foreach (Campground c in archesCampgrounds)
+            {
+                Console.WriteLine();
+                Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  $" + Math.Round(c.Daily_Fee, 2));
+            }
+            Console.WriteLine("Make a reservation = 1");
+            Console.WriteLine("return to main menu = 2");
+            int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
+            // reservation system
+        }
+
+        private void ShowAcadiaCampgrounds()
+        {
+            Console.WriteLine("Acadia Campgrounds");
+            CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
+            List<Campground> acadiaCampgrounds = dal.GetAllCampgrounds(1);
+            foreach (Campground c in acadiaCampgrounds)
+            {
+                Console.WriteLine();
+                Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  $" + Math.Round(c.Daily_Fee, 2));
+            }
+            Console.WriteLine("Make a reservation = 1");
+            Console.WriteLine("return to main menu = 2");
+            int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
+            // reservation system
         }
 
         private void ShowAllNationalParks()
@@ -84,6 +159,10 @@ namespace Capstone
 
             }
             Console.WriteLine();
+        }
+        public void GetAllCampsites()
+        {
+
         }
 
         private void PrintHeader()
@@ -106,7 +185,7 @@ namespace Capstone
             Console.WriteLine();
             Console.WriteLine("Main-Menu Type in a command");
             Console.WriteLine(" 1 - Show all National Parks in our System ");
-            Console.WriteLine(" 2 - Find campgroup By Park");
+            Console.WriteLine(" 2 - Show campgroup By Park");
             Console.WriteLine(" 3 - ");
             Console.WriteLine(" 4 - ");
             Console.WriteLine(" 5 - ");
