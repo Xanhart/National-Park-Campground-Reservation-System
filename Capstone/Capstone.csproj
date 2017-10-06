@@ -52,6 +52,7 @@
     <Compile Include="Models\Campground.cs" />
     <Compile Include="Models\Campsite.cs" />
     <Compile Include="Models\Park.cs" />
+    <Compile Include="Models\Reservation.cs" />
     <Compile Include="NationalParksCLI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
