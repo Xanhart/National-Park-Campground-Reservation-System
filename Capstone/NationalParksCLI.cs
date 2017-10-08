@@ -11,21 +11,11 @@ namespace Capstone
     
 
     public class NationalParksCLI
-    {
-        int parkchoice;
-        int campgroundchoice;
-        DateTime fromDate;
-        DateTime toDate;
-        int siteIdChoice;
-        int campsiteID;
-
+    { 
         private string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=NationalParks;User ID=te_student;Password=sqlserver1";
         const string Command_ShowAllParks = "1";
         const string Command_ShowCampGroundByPark = "2";
-        //const string Command_SHowAllCampsites = "3";
-        //const string /*Command_ = "4";*/
-        //const string /*Command_= "5";*/
-        //const string /*Command_ = "6";*/
+
         const string Command_Quit = "q";
 
 
@@ -51,14 +41,7 @@ namespace Capstone
                     case "2":
                         ShowCampgroundByPark();
                         break;
-                    //case //Option 3 
-                    //    break;
-                    //case //Option 4 
-                    //    break;
-                    //case //Option 5
-                    //    break;
-                    //case //Option 6 
-                    //    break;
+                 
                     case Command_Quit:
                         Console.WriteLine("Thanks for using your National Parks System!");
                         Console.WriteLine("Remember: National Parks are your land. Please pack in - pack out!");
@@ -78,28 +61,9 @@ namespace Capstone
                 Console.WriteLine("For Acadia National Park type --- 1");
                 Console.WriteLine("For Arches National Park type --- 2");
                 Console.WriteLine("For Cuyahoga National Park type --- 3");
-                //Console.WriteLine("To Quit type --- 4");
+                
                 int parkchoiceMade = CLIHelper.GetInteger("Make choice");
-
-                //    switch(parkchoiceMade)
-                //    {
-                //        case 1:
-                //            ShowAcadiaCampgrounds();
-                //           break;
-                //        case 2:
-                //            ShowArchesCampgrounds();
-                //            break;
-                //        case 3:
-                //            ShowCuyahogaCampgrounds();
-                //            break;
-                //        case 4:
-
-                //            break;
-
-                //    }
-                //    break;
-
-           
+            
             Console.WriteLine( "Campgrounds ");
             CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
             List<Campground> cuyahogaCampgrounds = dal.GetAllCampgrounds(parkchoiceMade);
@@ -156,47 +120,16 @@ namespace Capstone
             int reservationReferenceID =  rdal.MakeReservation(siteIdChoice, reservationName, fromDate, toDate);
             Console.WriteLine("Your reservation has been made. Your reservation ID is :  ");
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(reservationReferenceID);
+            Console.WriteLine(reservationReferenceID.ToString().PadLeft(50));
             Console.ResetColor();
             Console.WriteLine("Please bring Cash/Check/Money Order in the amount of : ");
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("TOTAL AMOUNT");
+            Console.WriteLine(@"TOTAL AMOUNT: #######");
             Console.ResetColor();
             Console.WriteLine(" when you arrive at the Park .");
         }
 
-        //private void ShowArchesCampgrounds()
-        //{
-        //    Console.WriteLine("Arches Campgrounds");
-        //    CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
-        //    List<Campground> archesCampgrounds = dal.GetAllCampgrounds(2);
-        //    foreach (Campground c in archesCampgrounds)
-        //    {
-        //        Console.WriteLine();
-        //        Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  " + (c.Daily_Fee.ToString("c")));
-        //    }
-        //    Console.WriteLine("Make a reservation = 1");
-        //    Console.WriteLine("return to main menu = 2");
-        //    int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
-        //    // reservation system
-        //}
-
-        //private void ShowAcadiaCampgrounds()
-        //{
-        //    Console.WriteLine("Acadia Campgrounds");
-        //    CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
-        //    List<Campground> acadiaCampgrounds = dal.GetAllCampgrounds(1);
-        //    foreach (Campground c in acadiaCampgrounds)
-        //    {
-        //        Console.WriteLine();
-        //        Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  " + (c.Daily_Fee.ToString("c"))); // currency thing goes here
-        //    }
-        //    Console.WriteLine("Make a reservation = 1");
-        //    Console.WriteLine("return to main menu = 2");
-        //    int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
-
-        //    // reservation system
-        //}
+        
 
         private void ShowAllNationalParks()
         {
@@ -204,7 +137,8 @@ namespace Capstone
             ParkSQLDAL dal = new ParkSQLDAL(connectionString);
             List<Park> allParks = dal.ShowAllNationalParks();
             Console.WriteLine("Showing all National Parks in our System");
-           
+            DateTime time = DateTime.Now;
+            string format = "yyyy";
 
             foreach (Park p in allParks)
             {
@@ -212,7 +146,7 @@ namespace Capstone
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Park ID".PadRight(20) + "Name".PadLeft(20) + "Location".PadLeft(30) + "Established".PadLeft(40) + "Area".PadLeft(30) + "Annual Visitors".PadLeft(30));
                 Console.ResetColor();
-                Console.WriteLine(p.Park_id.ToString().PadRight(20) + p.Name.ToString().PadLeft(20)  + p.Location.ToString().PadLeft(30) + p.Establish_date.ToString().PadLeft(40) + p.Area.ToString().PadLeft(30) + p.Visitors.ToString().PadLeft(30));
+                Console.WriteLine(p.Park_id.ToString().PadRight(20) + p.Name.ToString().PadLeft(20)  + p.Location.ToString().PadLeft(30) + p.Establish_date.ToString(format).PadLeft(40) + p.Area.ToString().PadLeft(30) + p.Visitors.ToString().PadLeft(30));
                 Console.WriteLine("Description: " + p.Description);
 
 
@@ -243,10 +177,8 @@ Console.WriteLine(@"                                                            
             Console.WriteLine("Main-Menu Type in a command");
             Console.WriteLine(" 1 - Show all National Parks in our System ");
             Console.WriteLine(" 2 - Show campgroup By Park");
-            //Console.WriteLine(" 3 - ");
-            //Console.WriteLine(" 4 - ");
-            //Console.WriteLine(" 5 - ");
-            //Console.WriteLine(" 6 - ");
+         
+
             Console.WriteLine(" Q - Quit");
         }
     }

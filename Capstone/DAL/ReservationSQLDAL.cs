@@ -43,7 +43,7 @@ namespace Capstone.DAL
                 }
 
             }
-            catch(SqlException ex)
+            catch(SqlException)
             {
                 throw;
             }
@@ -75,7 +75,7 @@ namespace Capstone.DAL
 
                 }
             }
-            catch(SqlException ex )
+            catch(SqlException)
             {
                 throw;
             }
