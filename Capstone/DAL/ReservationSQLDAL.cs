@@ -49,23 +49,7 @@ namespace Capstone.DAL
             }
             return output;
         }
-        //public bool CreateReservaton (Campsite Site_ID)
-        //{
-        //    try
-        //    {
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
-        //            SqlCommand cmd = new SqlCommand(""); // sql command goes here 
-        //            cmd.Parameters.AddWithValue()
-        //        }
-        //    }
-        //    catch (SqlException ex )
-        //    {
-        //        throw;
-        //    }
-
-        //}
+      
         public int  MakeReservation(int siteIdChoice, string reservationName, DateTime fromDate, DateTime toDate)
         {
             //List<Reservation> output = new List<Reservation>();

@@ -60,7 +60,8 @@ namespace Capstone
                     //case //Option 6 
                     //    break;
                     case Command_Quit:
-                        Console.WriteLine("Thanks for doing stuff on our stuff");
+                        Console.WriteLine("Thanks for using your National Parks System!");
+                        Console.WriteLine("Remember: National Parks are your land. Please pack in - pack out!");
                              break;
                 }
             
@@ -73,43 +74,35 @@ namespace Capstone
 
         private void ShowCampgroundByPark()
         {
-            while (true)
-            {
-                Console.WriteLine("Acdia = 1");
-                Console.WriteLine("Arches = 2");
-                Console.WriteLine("Cuy valley = 3");
-                Console.WriteLine("Quit = 4");
+                Console.WriteLine("Which National Park campground would you like to view?");
+                Console.WriteLine("For Acadia National Park type --- 1");
+                Console.WriteLine("For Arches National Park type --- 2");
+                Console.WriteLine("For Cuyahoga National Park type --- 3");
+                //Console.WriteLine("To Quit type --- 4");
                 int parkchoiceMade = CLIHelper.GetInteger("Make choice");
 
-                switch(parkchoiceMade)
-                {
-                    case 1:
-                        ShowAcadiaCampgrounds();
-                       break;
-                    case 2:
-                        ShowArchesCampgrounds();
-                        break;
-                    case 3:
-                        ShowCuyahogaCampgrounds();
-                        break;
-                    case 4:
-                        
-                        break;
+                //    switch(parkchoiceMade)
+                //    {
+                //        case 1:
+                //            ShowAcadiaCampgrounds();
+                //           break;
+                //        case 2:
+                //            ShowArchesCampgrounds();
+                //            break;
+                //        case 3:
+                //            ShowCuyahogaCampgrounds();
+                //            break;
+                //        case 4:
 
-                }
-                break;
+                //            break;
 
-            }
-        }
+                //    }
+                //    break;
 
-
-
-
-        private void ShowCuyahogaCampgrounds()
-        {
-            Console.WriteLine("Cuyahoga Campgrounds ");
+           
+            Console.WriteLine( "Campgrounds ");
             CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
-            List<Campground> cuyahogaCampgrounds = dal.GetAllCampgrounds(3);
+            List<Campground> cuyahogaCampgrounds = dal.GetAllCampgrounds(parkchoiceMade);
             System.Globalization.DateTimeFormatInfo dtf = new System.Globalization.DateTimeFormatInfo();
             string monthEnd = "";
             string monthStart = "";
@@ -118,18 +111,21 @@ namespace Capstone
                 Console.WriteLine();
                 monthStart = dtf.GetMonthName(c.Open_From_MM).ToString();
                 monthEnd = dtf.GetMonthName(c.Open_To_MM).ToString();
-                Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + monthStart + " - " + monthEnd + " -  " + (c.Daily_Fee.ToString("c")));
+                Console.WriteLine("Campground ID".PadRight(20) + "Campground Name".PadLeft(20)  + "Open From".PadLeft(20) + "Open Until".PadLeft(20) + "Daily Fee".PadLeft(20));
+                Console.WriteLine(c.Campground_ID.ToString().PadRight(20) +  c.Name.ToString().PadLeft(20) +  monthStart.ToString().PadLeft(20) + monthEnd.ToString().PadLeft(20) + (c.Daily_Fee.ToString("c")).PadLeft(20));
 
             }
             Console.WriteLine("Make a reservation = 1");
             Console.WriteLine("return to main menu = 2");
-            int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
+            int campgroundChoiceMade = CLIHelper.GetInteger("Please enter your selection");
+            if(campgroundChoiceMade == 2)
+            {
+                RunCLI();
+            }
 
-            //int parkchoice = 1;
-            int campgroundchoice = CLIHelper.GetInteger("Please enter Campground");
-                //int campsiteID = CLIHelper.GetInteger("please enter campsite");
-                DateTime fromDate = Convert.ToDateTime(CLIHelper.GetString("When do you want to arrive at the campsite"));
-                DateTime toDate = Convert.ToDateTime(CLIHelper.GetString("When do you want to leave?"));
+            int campgroundchoice = CLIHelper.GetInteger("Please enter The Campground ID");
+                DateTime fromDate = Convert.ToDateTime(CLIHelper.GetString("When do you want to arrive at the campsite (DD-MM-YYYY)"));
+                DateTime toDate = Convert.ToDateTime(CLIHelper.GetString("When do you want to leave? (DD-MM-YYYY)"));
 
             CampsiteSQLDAL siteDal = new CampsiteSQLDAL(connectionString);
 
@@ -143,50 +139,52 @@ namespace Capstone
                 foreach (Campsite c in availableSites)
                 {
                     Console.WriteLine();
+                    Console.WriteLine("Capsite ID".PadRight(20)  + "Campsite Number".PadLeft(20) + "Max Occupancy".PadLeft(20) + "Handicap".PadLeft(20)+ "Max RV Length".PadLeft(20) + "Utilities".PadLeft(20));
 
-                    Console.WriteLine(c.Site_ID + " - " + c.Campground_ID + " - " + c.Site_Number + " - " + c.Max_Occupancy + " - Handicap Assec " + c.Accessible + " - " + c.Max_RV_Length + " - " + c.Utilities);
+                    Console.WriteLine(c.Site_ID.ToString().PadRight(20) +  c.Site_Number.ToString().PadLeft(20) + c.Max_Occupancy.ToString().PadLeft(20) + c.Accessible.ToString().PadLeft(20) + c.Max_RV_Length.ToString().PadLeft(20) + c.Utilities.ToString().PadLeft(20));
                 }
             }
 
-            int siteIdChoice = CLIHelper.GetInteger("Which campsite would you like to reserve?");
+            int siteIdChoice = CLIHelper.GetInteger("Which campsite would you like to reserve? Please enter the Campsite ID");
             string reservationName = CLIHelper.GetString("What is your last name?");
             ReservationSQLDAL rdal = new ReservationSQLDAL(connectionString);
             int reservationReferenceID =  rdal.MakeReservation(siteIdChoice, reservationName, fromDate, toDate);
-            Console.WriteLine("here is your res id " + reservationReferenceID);
+            Console.WriteLine("Your reservation has been made. Your reservation ID is :  " + reservationReferenceID);
+            Console.WriteLine("Please bring Cash/Check/Money Order in the amount of : " + " when you arrive at the Park.");
         }
 
-        private void ShowArchesCampgrounds()
-        {
-            Console.WriteLine("Arches Campgrounds");
-            CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
-            List<Campground> archesCampgrounds = dal.GetAllCampgrounds(2);
-            foreach (Campground c in archesCampgrounds)
-            {
-                Console.WriteLine();
-                Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  " + (c.Daily_Fee.ToString("c")));
-            }
-            Console.WriteLine("Make a reservation = 1");
-            Console.WriteLine("return to main menu = 2");
-            int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
-            // reservation system
-        }
+        //private void ShowArchesCampgrounds()
+        //{
+        //    Console.WriteLine("Arches Campgrounds");
+        //    CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
+        //    List<Campground> archesCampgrounds = dal.GetAllCampgrounds(2);
+        //    foreach (Campground c in archesCampgrounds)
+        //    {
+        //        Console.WriteLine();
+        //        Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  " + (c.Daily_Fee.ToString("c")));
+        //    }
+        //    Console.WriteLine("Make a reservation = 1");
+        //    Console.WriteLine("return to main menu = 2");
+        //    int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
+        //    // reservation system
+        //}
 
-        private void ShowAcadiaCampgrounds()
-        {
-            Console.WriteLine("Acadia Campgrounds");
-            CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
-            List<Campground> acadiaCampgrounds = dal.GetAllCampgrounds(1);
-            foreach (Campground c in acadiaCampgrounds)
-            {
-                Console.WriteLine();
-                Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  " + (c.Daily_Fee.ToString("c"))); // currency thing goes here
-            }
-            Console.WriteLine("Make a reservation = 1");
-            Console.WriteLine("return to main menu = 2");
-            int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
+        //private void ShowAcadiaCampgrounds()
+        //{
+        //    Console.WriteLine("Acadia Campgrounds");
+        //    CampgroundSQLDAL dal = new CampgroundSQLDAL(connectionString);
+        //    List<Campground> acadiaCampgrounds = dal.GetAllCampgrounds(1);
+        //    foreach (Campground c in acadiaCampgrounds)
+        //    {
+        //        Console.WriteLine();
+        //        Console.WriteLine(c.Campground_ID + " - " + c.Name + " - " + c.Open_From_MM + " - " + c.Open_To_MM + " -  " + (c.Daily_Fee.ToString("c"))); // currency thing goes here
+        //    }
+        //    Console.WriteLine("Make a reservation = 1");
+        //    Console.WriteLine("return to main menu = 2");
+        //    int campgroundChoiceMade = CLIHelper.GetInteger("Make choice");
 
-            // reservation system
-        }
+        //    // reservation system
+        //}
 
         private void ShowAllNationalParks()
         {
@@ -199,7 +197,8 @@ namespace Capstone
             foreach (Park p in allParks)
             {
                 Console.WriteLine();
-                Console.WriteLine(p.Park_id + ")" + p.Name + " - " + p.Location + " - " + p.Establish_date + " - " + p.Area + " - " + p.Visitors + " visitors per year  ");
+                Console.WriteLine("Park ID".PadRight(20) + "Name".PadLeft(20) + "Location".PadLeft(30) + "Established".PadLeft(40) + "Area".PadLeft(30) + "Annual Visitors".PadLeft(30));
+                Console.WriteLine(p.Park_id.ToString().PadRight(20) + p.Name.ToString().PadLeft(20)  + p.Location.ToString().PadLeft(30) + p.Establish_date.ToString().PadLeft(40) + p.Area.ToString().PadLeft(30) + p.Visitors.ToString().PadLeft(30));
                 Console.WriteLine("Description: " + p.Description);
 
 
@@ -207,18 +206,7 @@ namespace Capstone
             Console.WriteLine();
             PrintMenu();
         }
-        //public void  GetAllCampsitesThatAreavailable(int parkID, int campsiteID, DateTime fromDate, DateTime toDate)
-        //{
-        //    ReservationSQLDAL dal = new ReservationSQLDAL(connectionString);
-        //    List<Reservation> allRes = dal.GetAllReservations(campgroundchoice);
-        //    Console.WriteLine("Dates not available");
-        //    foreach(Reservation r in allRes)
-        //    {
-        //        Console.WriteLine();
-        //        Console.WriteLine(r.From_Date + "    " + r.To_Date);
-        //    }
-        //}
-
+    
         private void PrintHeader()
         {
             Console.WriteLine("Header top");
@@ -240,10 +228,10 @@ namespace Capstone
             Console.WriteLine("Main-Menu Type in a command");
             Console.WriteLine(" 1 - Show all National Parks in our System ");
             Console.WriteLine(" 2 - Show campgroup By Park");
-            Console.WriteLine(" 3 - ");
-            Console.WriteLine(" 4 - ");
-            Console.WriteLine(" 5 - ");
-            Console.WriteLine(" 6 - ");
+            //Console.WriteLine(" 3 - ");
+            //Console.WriteLine(" 4 - ");
+            //Console.WriteLine(" 5 - ");
+            //Console.WriteLine(" 6 - ");
             Console.WriteLine(" Q - Quit");
         }
     }
