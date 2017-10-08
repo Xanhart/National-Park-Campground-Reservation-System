@@ -77,6 +77,27 @@ namespace Capstone
             return boolValue;
         }
 
+        public static DateTime GetDateTime(string message)
+        {
+            string userInput = String.Empty;
+            DateTime dateTimeValue = DateTime.Now;
+            int numberOfAttempts = 0;
+
+            do
+            {
+                if (numberOfAttempts > 0)
+                {
+                    Console.WriteLine("Invalid input format. Please try again");
+                }
+
+                Console.Write(message + " ");
+                userInput = Console.ReadLine();
+                numberOfAttempts++;
+            }
+            while (!DateTime.TryParse(userInput, out dateTimeValue));
+
+            return dateTimeValue;
+        }
         public static string GetString(string message)
         {
             string userInput = String.Empty;
@@ -97,5 +118,6 @@ namespace Capstone
 
             return userInput;
         }
+
     }
 }

@@ -1,0 +1,5 @@
+1)
+When selecting a campsite you are given 1-5 choices. 
+If the user selects a choice that is less than 1 or greater than the number of choices
+ the program will select That campsoite that is out of range. 
+ 2)

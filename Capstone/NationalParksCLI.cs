@@ -111,7 +111,9 @@ namespace Capstone
                 Console.WriteLine();
                 monthStart = dtf.GetMonthName(c.Open_From_MM).ToString();
                 monthEnd = dtf.GetMonthName(c.Open_To_MM).ToString();
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Campground ID".PadRight(20) + "Campground Name".PadLeft(20)  + "Open From".PadLeft(20) + "Open Until".PadLeft(20) + "Daily Fee".PadLeft(20));
+                Console.ResetColor();
                 Console.WriteLine(c.Campground_ID.ToString().PadRight(20) +  c.Name.ToString().PadLeft(20) +  monthStart.ToString().PadLeft(20) + monthEnd.ToString().PadLeft(20) + (c.Daily_Fee.ToString("c")).PadLeft(20));
 
             }
@@ -124,23 +126,26 @@ namespace Capstone
             }
 
             int campgroundchoice = CLIHelper.GetInteger("Please enter The Campground ID");
-                DateTime fromDate = Convert.ToDateTime(CLIHelper.GetString("When do you want to arrive at the campsite (DD-MM-YYYY)"));
-                DateTime toDate = Convert.ToDateTime(CLIHelper.GetString("When do you want to leave? (DD-MM-YYYY)"));
+                DateTime fromDate = CLIHelper.GetDateTime("When do you want to arrive at the campsite (DD-MM-YYYY)");
+                DateTime toDate =   CLIHelper.GetDateTime("When do you want to leave? (DD-MM-YYYY)");
 
             CampsiteSQLDAL siteDal = new CampsiteSQLDAL(connectionString);
 
             List<Campsite> availableSites = siteDal.GetAvailableCampsites(campgroundchoice, fromDate, toDate);
             if (availableSites.Count <= 0)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Youre outta luck buck-o");
+                Console.ResetColor();
             }
             else
             {
                 foreach (Campsite c in availableSites)
                 {
                     Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Capsite ID".PadRight(20)  + "Campsite Number".PadLeft(20) + "Max Occupancy".PadLeft(20) + "Handicap".PadLeft(20)+ "Max RV Length".PadLeft(20) + "Utilities".PadLeft(20));
-
+                    Console.ResetColor();
                     Console.WriteLine(c.Site_ID.ToString().PadRight(20) +  c.Site_Number.ToString().PadLeft(20) + c.Max_Occupancy.ToString().PadLeft(20) + c.Accessible.ToString().PadLeft(20) + c.Max_RV_Length.ToString().PadLeft(20) + c.Utilities.ToString().PadLeft(20));
                 }
             }
@@ -149,8 +154,15 @@ namespace Capstone
             string reservationName = CLIHelper.GetString("What is your last name?");
             ReservationSQLDAL rdal = new ReservationSQLDAL(connectionString);
             int reservationReferenceID =  rdal.MakeReservation(siteIdChoice, reservationName, fromDate, toDate);
-            Console.WriteLine("Your reservation has been made. Your reservation ID is :  " + reservationReferenceID);
-            Console.WriteLine("Please bring Cash/Check/Money Order in the amount of : " + " when you arrive at the Park.");
+            Console.WriteLine("Your reservation has been made. Your reservation ID is :  ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(reservationReferenceID);
+            Console.ResetColor();
+            Console.WriteLine("Please bring Cash/Check/Money Order in the amount of : ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("TOTAL AMOUNT");
+            Console.ResetColor();
+            Console.WriteLine(" when you arrive at the Park .");
         }
 
         //private void ShowArchesCampgrounds()
@@ -197,7 +209,9 @@ namespace Capstone
             foreach (Park p in allParks)
             {
                 Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Park ID".PadRight(20) + "Name".PadLeft(20) + "Location".PadLeft(30) + "Established".PadLeft(40) + "Area".PadLeft(30) + "Annual Visitors".PadLeft(30));
+                Console.ResetColor();
                 Console.WriteLine(p.Park_id.ToString().PadRight(20) + p.Name.ToString().PadLeft(20)  + p.Location.ToString().PadLeft(30) + p.Establish_date.ToString().PadLeft(40) + p.Area.ToString().PadLeft(30) + p.Visitors.ToString().PadLeft(30));
                 Console.WriteLine("Description: " + p.Description);
 
@@ -209,18 +223,19 @@ namespace Capstone
     
         private void PrintHeader()
         {
-            Console.WriteLine("Header top");
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("Header mid ");
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("Header Bottom");
-        }
+            Console.ForegroundColor = ConsoleColor.Red;
+Console.WriteLine(@"                                                                                                            ");
+Console.WriteLine(@" _   _       _   _                   _   _____           _       _____           _                          ");
+Console.WriteLine(@"| \ | |     | | (_)                 | | |  __ \         | |     / ____|         | |                         ");
+Console.WriteLine(@"|  \| | __ _| |_ _  ___  _ __   __ _| | | |__) |_ _ _ __| | __ | (___  _   _ ___| |_ ___ _ __ ___           ");
+Console.WriteLine(@"| . ` |/ _` | __| |/ _ \| '_ \ / _` | | |  ___/ _` | '__| |/ /  \___ \| | | / __| __/ _ \ '_ ` _ \          ");
+Console.WriteLine(@"| |\  | (_| | |_| | (_) | | | | (_| | | | |  | (_| | |  |   <   ____) | |_| \__ \ ||  __/ | | | | |         ");
+Console.WriteLine(@"|_| \_|\__,_|\__|_|\___/|_| |_|\__,_|_| |_|   \__,_|_|  |_|\_\ |_____/ \__, |___/\__\___|_| |_| |_|         ");
+Console.WriteLine(@"                                                                        __/ |                               ");
+Console.WriteLine(@"                                                                        |___/                               ");
+Console.WriteLine(@"                                                                                                            ");
+            Console.ResetColor();
+        }                                                                                                                      
         private void PrintMenu()
         {
             Console.WriteLine();
