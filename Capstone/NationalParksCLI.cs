@@ -99,7 +99,7 @@ namespace Capstone
             if (availableSites.Count <= 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Youre outta luck buck-o");
+                Console.WriteLine("No Campsites Available");
                 Console.ResetColor();
             }
             else
@@ -120,13 +120,15 @@ namespace Capstone
             int reservationReferenceID =  rdal.MakeReservation(siteIdChoice, reservationName, fromDate, toDate);
             Console.WriteLine("Your reservation has been made. Your reservation ID is :  ");
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(reservationReferenceID.ToString().PadLeft(50));
+            Console.WriteLine(reservationReferenceID.ToString().PadLeft(20));
             Console.ResetColor();
             Console.WriteLine("Please bring Cash/Check/Money Order in the amount of : ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(@"TOTAL AMOUNT: #######");
             Console.ResetColor();
             Console.WriteLine(" when you arrive at the Park .");
+            RunCLI();
+            // add the option to email or write to a file the 
         }
 
         
@@ -137,7 +139,7 @@ namespace Capstone
             ParkSQLDAL dal = new ParkSQLDAL(connectionString);
             List<Park> allParks = dal.ShowAllNationalParks();
             Console.WriteLine("Showing all National Parks in our System");
-            DateTime time = DateTime.Now;
+            //DateTime time = DateTime.Now;
             string format = "yyyy";
 
             foreach (Park p in allParks)
